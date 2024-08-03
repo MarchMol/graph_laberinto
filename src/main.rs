@@ -5,6 +5,7 @@ use player::Player;
 use ray_caster::cast_ray;
 use std::{time::Duration};
 
+mod start_screen;
 mod ray_caster;
 mod player;
 mod color;
@@ -86,9 +87,12 @@ fn draw_player_view(
     }
 }
 
+fn pre_play(framebuffer: &mut Framebuffer,){
+    start_screen::renderScreen(framebuffer);
+}
 
 fn main() {
-    let maze = load_maze("./maze.txt");
+    let maze = load_maze("./maze_easy.txt");
 
 
     let window_width = 600;
@@ -103,14 +107,14 @@ fn main() {
 
     let mut framebuffer = framebuffer::Framebuffer::new(framebuffer_width, framebuffer_height);
     
-    for row in 0..maze.len(){
-        for col in 0..maze[row].len(){
-            if maze[row][col] =='p'{
-                player.setPos((row*block_size) as f32, (col*block_size) as f32);
-            }
-            render(&mut framebuffer, maze[row][col], row, col, block_size);
-        }
-    }
+    // for row in 0..maze.len(){
+    //     for col in 0..maze[row].len(){
+    //         if maze[row][col] =='p'{
+    //             player.setPos((row*block_size) as f32, (col*block_size) as f32);
+    //         }
+    //         render(&mut framebuffer, maze[row][col], row, col, block_size);
+    //     }
+    // }
 
     let mut window = Window::new(
         "rust grahpics - test",
@@ -126,25 +130,27 @@ fn main() {
         if window.is_key_down(Key::Escape) {
             break;
         }
-        if window.is_key_down(Key::C) {
-            draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
-        }
-        if window.is_key_down(Key::M){
-            mode = if mode == "2D" {"3D"} else {"2D"}
-        }
-        if mode == "2D"{
-            draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
-        } else {
-            render3d(&mut framebuffer, &maze, &mut player, block_size)
-        }
 
-        let intersect = cast_ray(&mut framebuffer, &maze, &player, player.a, block_size, false);
-        if intersect.distance < 5.0{
-            wall = true;
-        } else{
-            wall = false;
-        }
-        process_events::processEvent(&mut player, &window, wall);
+        pre_play(&mut framebuffer);
+        // if window.is_key_down(Key::C) {
+        //     draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
+        // }
+        // if window.is_key_down(Key::M){
+        //     mode = if mode == "2D" {"3D"} else {"2D"}
+        // }
+        // if mode == "2D"{
+        //     draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
+        // } else {
+        //     render3d(&mut framebuffer, &maze, &mut player, block_size)
+        // }
+
+        // let intersect = cast_ray(&mut framebuffer, &maze, &player, player.a, block_size, false);
+        // if intersect.distance < 5.0{
+        //     wall = true;
+        // } else{
+        //     wall = false;
+        // }
+        // process_events::processEvent(&mut player, &window, wall);
 
         window
             .update_with_buffer(

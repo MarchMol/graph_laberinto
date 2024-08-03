@@ -41,12 +41,6 @@ impl Framebuffer {
             ((color.r as u32) << 16) | ((color.g as u32) << 8) | (color.b as u32)
         }).collect()  // Collect into a Vec<u32>
     }
-    pub fn get_point(&self, x: i32, y: i32 ) -> Color {
-        let _x = (x as f32).clamp(0.0, (self.width as f32)) as usize;
-        let _y = (y as f32).clamp(0.0, (self.height as f32)) as usize;
-        let index = _y*self.width+ _x;
-        self.buffer[index]
-    }
 
     pub fn set_bgcolor(&mut self, color: u32){
         self.background_color = Color::from_hex(color);
