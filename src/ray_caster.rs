@@ -35,8 +35,9 @@ pub fn cast_ray(
         }
         if draw_line{
             framebuffer.point(x, y);
+            d+=10.0;
+        }else{
+            d+=0.5;
         }
-
-        d+=10.0;
     }
 }
