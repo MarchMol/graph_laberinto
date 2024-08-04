@@ -87,22 +87,28 @@ fn draw_player_view(
     }
 }
 
-fn pre_play(framebuffer: &mut Framebuffer,){
+fn pre_play(framebuffer: &mut Framebuffer,val: &mut f32, window: &Window){
+    start_screen::selectListener(framebuffer, window, val);
+    start_screen::renderSelect(framebuffer, val);
     start_screen::renderScreen(framebuffer);
+
 }
 
 fn main() {
     let maze = load_maze("./maze_easy.txt");
-
+    let mut val: f32 = 0.0;
 
     let window_width = 600;
     let window_height = 600;
     let block_size = 50;
 
     let mut player = Player::new();
-    let framebuffer_width = maze.len()*block_size;
-    let framebuffer_height = maze[0].len()*block_size;
+    // let framebuffer_width = maze.len()*block_size;
+    // let framebuffer_height = maze[0].len()*block_size;
 
+    let framebuffer_width = 400;
+    let framebuffer_height = 600;
+    
     let frame_delay = Duration::from_millis(70);
 
     let mut framebuffer = framebuffer::Framebuffer::new(framebuffer_width, framebuffer_height);
@@ -131,7 +137,7 @@ fn main() {
             break;
         }
 
-        pre_play(&mut framebuffer);
+        pre_play(&mut framebuffer, &mut val, &window);
         // if window.is_key_down(Key::C) {
         //     draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
         // }
