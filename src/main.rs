@@ -3,7 +3,7 @@ use loader::load_maze;
 use minifb::{Key, Window, WindowOptions};
 use player::Player;
 use ray_caster::{cast_ray, Intersect};
-use std::time::Duration;
+use std::time::{ Instant,Duration};
 use core::f32::consts::PI;
 
 mod start_screen;
@@ -13,6 +13,7 @@ mod color;
 mod framebuffer;
 mod loader;
 mod process_events;
+mod fps;
 
 
 fn draw_block(framebuffer: &mut framebuffer::Framebuffer, xo: usize, yo: usize, block_size: usize){
@@ -115,6 +116,9 @@ fn playing(val: f32, screen: &mut usize){
     };
     let maze = load_maze(maze_name);
 
+    // loading numbers for fps
+    let numbers = load_maze("./numbers.txt");
+
     // intialising variables
     let window_width = 600;
     let window_height = 600;
@@ -126,7 +130,7 @@ fn playing(val: f32, screen: &mut usize){
 
     let mut player = Player::new();
 
-    let frame_delay = Duration::from_millis(16);
+    let frame_delay = Duration::from_millis(0);
     let mut framebuffer = framebuffer::Framebuffer::new(framebuffer_width, framebuffer_height);
 
     // drawing 2d maze
@@ -143,11 +147,13 @@ fn playing(val: f32, screen: &mut usize){
     let mut wall_f = false;
     let mut wall_b = false;
     let mut mode = "2D";
+    let mut last_time = Instant::now();
+    let mut fps_counter = 0;
+    let mut fps_last = 10;
     while window.is_open() {
         if window.is_key_down(Key::Escape) {
             break;
         }
-
         if window.is_key_pressed(Key::M, minifb::KeyRepeat::No){
             mode = if mode == "2D" {"3D"} else {"2D"}
         }
@@ -156,9 +162,19 @@ fn playing(val: f32, screen: &mut usize){
         if mode == "2D"{ // 2D
             draw_player_view(&mut framebuffer, &maze, &mut player, block_size);
         } else { // 3D
-            render3d(&mut framebuffer, &maze, &mut player, block_size)
+            render3d(&mut framebuffer, &maze, &mut player, block_size);
         }
 
+        // Fps Counter
+        fps_counter += 1;
+        if last_time.elapsed() >= Duration::from_secs(1) {
+            fps_last = fps_counter;
+            fps_counter = 0;
+            last_time = Instant::now();
+        }
+        fps::render_fps(&mut framebuffer, &numbers, fps_last);
+
+        // Intersection controll (front or back wall are too close)
         let intersect_f = cast_ray(&mut framebuffer, &maze, &player, player.a, block_size, false);
         let intersect_b = cast_ray(&mut framebuffer, &maze, &player, player.a+PI, block_size, false);
         if intersect_f.distance < 6.0{
