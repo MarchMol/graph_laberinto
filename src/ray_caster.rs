@@ -15,7 +15,6 @@ pub fn cast_ray(
     draw_line: bool,
 )-> Intersect{
     let mut d = 0.0;
-    framebuffer.set_current_color(0xff1100);
 
     loop{
         let cos = d*a.cos();

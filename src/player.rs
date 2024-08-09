@@ -3,7 +3,7 @@ use nalgebra_glm::{pi, Vec2};
 use core::f32::consts::PI;
 
 const MOVE_SPEED: f32 = 5.0;
-const ROTATION_SPEED: f32 = PI/50.0;
+const ROTATION_SPEED: f32 = PI/100.0;
 
 pub struct Player{
     pub pos:nalgebra_glm::Vec2,
