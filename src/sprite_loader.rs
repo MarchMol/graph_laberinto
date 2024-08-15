@@ -10,7 +10,6 @@ pub struct Sprite{
     pub width: usize,
 }
 
-
 impl Sprite{
     pub fn render_screen(framebuffer: &mut Framebuffer, sprite: &Sprite) {
         for x in 0..framebuffer.width - 1 {

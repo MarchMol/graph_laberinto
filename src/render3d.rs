@@ -14,7 +14,6 @@ pub fn render3d(
     sprites: &[&Sprite],
     goal: &mut Goal,
 ) {
-    framebuffer.clear();
     let num_rays = framebuffer.width;
     let hh = (framebuffer.height / 2) as f32;
     let mut try_sprite = false;
