@@ -6,11 +6,11 @@ pub fn render_fps(framebuffer: &mut Framebuffer, numbers: &Vec<Vec<char>>, num: 
     framebuffer.set_current_color(0xffffff);
 }
 
-pub fn text_format(framebuffer: &mut Framebuffer, numbers: &Vec<Vec<char>>, num: usize){
+pub fn text_format(framebuffer: &mut Framebuffer, numbers: &Vec<Vec<char>>, num: usize, ){
     for i in 0..6{
         for col in 0..numbers[i].len(){
             if numbers[i][col]!=' '{
-                render_rectangle(framebuffer, (i+1)*3, (col+1)*3, 3, 3);
+                render_rectangle(framebuffer, (i+2)*3, (col+50)*3, 3, 3);
             }  
         }
     }
@@ -21,7 +21,7 @@ pub fn text_format(framebuffer: &mut Framebuffer, numbers: &Vec<Vec<char>>, num:
         for i in 0..6{
             for col in 0..numbers[(6*(digit+1))+i-1].len(){
                 if numbers[(6*(digit+1))+i-1][col]!=' '{
-                    render_rectangle(framebuffer, (i+1)*3, col*3+(45+12*digit_pos), 3, 3);
+                    render_rectangle(framebuffer, (i+1)*3, (col+50)*3+(45+12*digit_pos), 3, 3);
                 }  
             }
         }

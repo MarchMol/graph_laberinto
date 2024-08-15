@@ -25,10 +25,9 @@ impl Color {
         ((self.r as u32)<< 16) | ((self.g as u32) << 8) | (self.b as u32)
     }
 
-    pub fn print_me(&self) {
-        println!("r: {}, g: {}, b: {}", self.r, self.g, self.b);
-
-    }
+    // pub fn print_me(&self) {
+    //     println!("r: {}, g: {}, b: {}", self.r, self.g, self.b);
+    // }
 }
 
 impl std::ops::Add for Color{
